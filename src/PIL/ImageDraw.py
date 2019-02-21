@@ -282,7 +282,7 @@ class ImageDraw(object):
             self.draw.draw_bitmap(xy, mask, ink)
 
     def multiline_text(self, xy, text, fill=None, font=None, anchor=None,
-                       spacing=4, align="left", direction=None, features=None):
+                       spacing=4, align="left", direction="ltr", features=None):
         widths = []
         heights = []
         max_width = 0
@@ -328,13 +328,20 @@ class ImageDraw(object):
     def multiline_textsize(self, text, font=None, spacing=4, direction=None,
                            features=None):
         max_width = 0
+        max_height = 0
+        widths = []
         lines = self._multiline_split(text)
         line_spacing = self.textsize('A', font=font)[1] + spacing
         for line in lines:
             line_width, line_height = self.textsize(line, font, spacing,
                                                     direction, features)
+            widths.append(line_width) 
             max_width = max(max_width, line_width)
-        return max_width, len(lines)*line_spacing - spacing
+            max_height = max(max_height, line_height)
+        if direction is 'ttb':
+            return sum(widths) + (len(lines)-1)*spacing, max_height 
+        else:
+            return max_width, len(lines)*line_spacing - spacing
 
 
 def Draw(im, mode=None):

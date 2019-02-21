@@ -698,7 +698,7 @@ font_getsize(FontObject* self, PyObject* args)
             }
         } else if (direction == DIRECTION_TTB) {
             if (i == 0 && face->glyph->metrics.vertBearingY < 0) {
-                yoffset = face->glyph->metrics.horiBearingY;
+                yoffset = face->glyph->metrics.vertBearingY;
                 y += yoffset;
             }
             y += glyph_info[i].y_advance;
@@ -930,8 +930,8 @@ font_render(FontObject* self, PyObject* args)
                     yy = y + im->ysize - (PIXEL(glyph->metrics.horiBearingY) + ascender);
                     yy -= PIXEL(glyph_info[i].y_offset);
                 } else if (direction == DIRECTION_TTB) {
-                    //yy = origin_y + PIXEL(glyph->metrics.vertBearingY) + y;
-                    yy = origin_y + PIXEL(self->face->size->metrics.ascender) - glyph->bitmap_top + y;
+                    yy = origin_y + PIXEL(glyph->metrics.vertBearingY) + y;
+                    //yy = origin_y + PIXEL(self->face->size->metrics.ascender) - glyph->bitmap_top + y;
                 }
                 if (yy >= 0 && yy < im->ysize) {
                     /* blend this glyph into the buffer */
@@ -956,8 +956,8 @@ font_render(FontObject* self, PyObject* args)
                     yy = y + im->ysize - (PIXEL(glyph->metrics.horiBearingY) + ascender);
                     yy -= PIXEL(glyph_info[i].y_offset);
                 } else if (direction == DIRECTION_TTB) {
-                    //yy = origin_y + PIXEL(glyph->metrics.vertBearingY) + y;
-                    yy = origin_y + PIXEL(self->face->size->metrics.ascender) - glyph->bitmap_top + y;
+                    yy = origin_y + PIXEL(glyph->metrics.vertBearingY) + y;
+                    //yy = origin_y + PIXEL(self->face->size->metrics.ascender) - glyph->bitmap_top + y;
                 }
                 if (yy >= 0 && yy < im->ysize) {
                     /* blend this glyph into the buffer */
